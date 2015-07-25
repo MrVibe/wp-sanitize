@@ -44,71 +44,37 @@ class wp_sanitize_admin{
 	function get(){
 		$this->option = get_option('wpsanitize');
 	}
+
+	function tabs(){
+		$tabs = array(
+			'general' => __('General','wp-sanitize'),
+			'protection' => __('Protection','wp-sanitize'),
+			'spam' => __('Spam','wp-sanitize'),
+			'security'=> __('Security','wp-sanitize'),
+			'credits'=>__('Credits','wp-sanitize')
+			);
+		$current = isset( $_GET['tab'] ) ? $_GET['tab'] : 'general';
+	    echo '<div id="icon-themes" class="icon32"><br></div>';
+	    echo '<h2 class="nav-tab-wrapper">';
+	    foreach( $tabs as $tab => $name ){
+	        $class = ( $tab == $current ) ? ' nav-tab-active' : '';
+	        echo "<a class='nav-tab$class' href='?page=wp_sanitize&tab=$tab'>$name</a>";
+
+	    }
+	    echo '</h2>';
+	    if(isset($_POST['save'])){
+	    	$this->save();
+	    }
+	}
 	function options_page(){
-		?>
-		<div class="wrap"><div id="icon-tools" class="icon32"><br /></div>
-			<h2><?php _e("WP Sanitize Options Page"); ?></h2> <?php echo $msg; ?>
-				<div class="tool-box">
-					<h3 class="title"><?php _e('Clean up wp_head and Content'); ?></h3>
-						<form method="post" action="options.php"><?php settings_fields( 'wps_options' ); ?>
-							<table class="form-table">
-								<tr valign="top"><th scope="row"><?php _e( 'RSD Link' ); ?></th>
-				    				<td>
-				    					<input id="wpsanitize[rds_link]" name="wpsanitize[rds_link]" type="checkbox" value="1" <?php checked( '1', $opt['rds_link'] ); ?> />
-				        				<label class="description" for="wpsanitize[rds_link]"><?php _e( 'Remove Really simple discovery link' ); ?></label>
-				    				</td>
-								</tr>
-								<tr valign="top"><th scope="row"><?php _e( 'Windows Live Link' ); ?></th>
-			    					<td>
-			        					<input id="wpsanitize[wlwmanifest_link]" name="wpsanitize[wlwmanifest_link]" type="checkbox" value="1" <?php checked( '1', $opt['wlwmanifest_link'] ); ?> />
-			        					<label class="description" for="wpsanitize[wlwmanifest_link]"><?php _e( 'Remove Windows Live Writer link ' ); ?></label>
-			    					</td>
-								</tr>
-								<tr valign="top"><th scope="row"><?php _e( 'WP Version Number' ); ?></th>
-			    					<td>
-			        					<input id="wpsanitize[wp_generator]" name="wpsanitize[wp_generator]" type="checkbox" value="1" <?php checked( '1', $opt['wp_generator'] ); ?> />
-			        					<label class="description" for="wpsanitize[wp_generator]"><?php _e( 'Remove the version number (recommended for security reasons)' ); ?></label>
-			    					</td>
-								</tr>
-								<tr valign="top"><th scope="row"><?php _e( 'Content Curly Quotes' ); ?></th>
-								    <td>
-								        <input id="wpsanitize[wptexturize]" name="wpsanitize[wptexturize]" type="checkbox" value="1" <?php checked( '1', $opt['wptexturize'] ); ?> />
-								        <label class="description" for="wpsanitize[wptexturize]"><?php _e( 'Remove curly quotes' ); ?></label>
-								    </td>
-								</tr>
-								<tr valign="top"><th scope="row"><?php _e( 'User Profile HTML' ); ?></th>
-								    <td>
-								        <input id="wpsanitize[wp_filter_kses]" name="wpsanitize[wp_filter_kses]" type="checkbox" value="1" <?php checked( '1', $opt['wp_filter_kses'] ); ?> />
-								        <label class="description" for="wpsanitize[wp_filter_kses]"><?php _e( 'Allow HTML in user profiles' ); ?></label>
-								    </td>
-								</tr>
-							</table>
-							<p class="submit">
-							    <input type="submit" class="button-primary" value="<?php _e( 'Save Options' ); ?>" />
-							</p>
-						</form>
-				</div>
-				<div class="tool-box">
-					<h3 class="title"><?php _e('Optimize WordPress Database'); ?></h3>
-					<p><?php _e('By default this plugin is set to optimize WordPress database tables daily by removing overhead (useless/excess data in a SQL table created by manipulating the database). This is an automated process but can be done manually as well by clicking on the button below.'); ?></p>
-		    		<p>This plugin is brought to you by <a href="http://www.vibethemes.com" target="_blank">VibeThemes.com</a></p>
-		    		<form method="post">
-		    			<input type="hidden" name="wps-optimizedb" value="1">
-		    			<p><input type="submit" class="button" value="<?php _e('Optimize Database Now') ?>" /></p>
-		    		</form>
-				</div>
-				<form method="post"><br />
-					<input type="hidden" name="reset-wpsanitize" value="1">
-					<p><input type="submit" class="button-active" onclick="return confirm('Are you sure you want to reset to default settings?')" value="<?php _e('Reset to Defaults') ?>" /></p>
-				</form>
-				<script type="text/javascript">
-			    	var $jq = jQuery.noConflict();
-			    	$jq(document).ready(function() { $jq(".updated").fadeIn(1000).fadeTo(1000, 1).fadeOut(1000); });
-				</script>
-			</div>
-		<?php 
+		$this->tabs();
+		$current = isset( $_GET['tab'] ) ? $_GET['tab'] : 'general';
+		include_once 'views/'.$current.'.php';
 	}
 
+	function save(){
+		print_r($_POST);
+	}
 	function execute(){
 
 		// Reset to defaults

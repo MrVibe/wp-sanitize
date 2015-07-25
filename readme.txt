@@ -6,13 +6,18 @@ Requires at least: 2.7
 Tested up to: 3.2.1
 Stable tag: 1.0
 
-Keep your WordPress Optimized and Secure 24x7
+Keep your WordPress Optimized and Secure 24x7. Scan & remove registered spam users, comments.
 == Description ==
-WP Sanitize checks for potential security vulnerabilities and keeps your WordPress database optimized. And most important runs on Fully Automatic mode.
+
+WP Sanitize is a plug and play solution for your WordPress site security and protection. It checks for potential security vulnerabilities and keeps your WordPress database optimized. It will check the spam registrations and remove them from your setup. And most important runs on Fully Automatic mode.
+
+
 = Features =
 <ul>
 <li>Plug and Play solution : Just install and forget</li>
 <li>Light Weight 2KB plugin , resides in the admin panel</li>
+<li>Remove Spam comments and Users, "after" they've been registred in your site</li>
+<li>Protect media file hotlinking</li>
 <li>Cleans wp_head and Content</li>
 <li>Removes RSD link (Really simple discovery link)</li>
 <li>Cleans Curly quotes from Content</li>
